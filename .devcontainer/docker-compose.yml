@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+  sandbox-app-python:
+    # Uncomment the next line to use a non-root user for all processes.
+    # See https://aka.ms/vscode-remote/containers/non-root for details.
+    # user: node
+    container_name: sandbox.app.python.local
+    # Uncomment if you want to add a different Dockerfile in the .devcontainer folder
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # Update VARIANT to pick a node version:
+        PYTHON_VARIANT: 3.8.7
+
+        # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_UID: 1000
+        USER_GID: 1000
+    # Uncomment if you want to expose any additional ports. The snippet below exposes port 3000.
+    # ports:
+    #   - 3000:3000
+    # environment:
+        # - API_URL=http://sandbox.app.python.local:5000
+    # Update this to wherever you want VS Code to mount the folder of your project
+    volumes:
+      - ..:/workspace:cached
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+    # networks:
+    #     - sandbox_app_python_devcontainer_default
+    links:
+      - sandbox-db-python
+
+  sandbox-db-python:
+    container_name: sandbox.db.python.local
+    image: postgres:latest
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: data
+
+# networks:
+#     sandbox_app_python_devcontainer_default:
+#         external: true
