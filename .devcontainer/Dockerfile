@@ -44,18 +44,20 @@ RUN git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
 
 RUN echo '' >> $HOME/.bashrc
 RUN echo 'export PATH=$HOME/.pyenv/bin:$PATH' >> $HOME/.bashrc
+RUN echo 'eval "$(pyenv init --path)"' >> ~/.bashrc
 RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
 
 ENV PATH $HOME/.pyenv/bin:$PATH
+RUN eval "$(pyenv init --path)"
 RUN eval "$(pyenv init -)"
 RUN pyenv install -v ${PYTHON_VARIANT} && \
     pyenv global ${PYTHON_VARIANT}
 RUN chown -R docker:docker $HOME/.pyenv
 
 # awscli settings
-RUN wget https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
-RUN unzip awscli-exe-linux-x86_64.zip && ./aws/install
-RUN rm -f awscli-exe-linux-x86_64.zip
+# RUN wget https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+# RUN unzip awscli-exe-linux-x86_64.zip && ./aws/install
+# RUN rm -f awscli-exe-linux-x86_64.zip
 
 RUN apt-get -y autoremove -y
 RUN apt-get -y clean

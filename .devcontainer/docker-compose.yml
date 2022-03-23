@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  sandbox-app-python:
+  python-websocket-sandbox:
     # Uncomment the next line to use a non-root user for all processes.
     # See https://aka.ms/vscode-remote/containers/non-root for details.
     # user: node
@@ -12,7 +12,7 @@ services:
       dockerfile: Dockerfile
       args:
         # Update VARIANT to pick a node version:
-        PYTHON_VARIANT: 3.8.7
+        PYTHON_VARIANT: 3.8.13
 
         # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_UID: 1000
@@ -29,19 +29,19 @@ services:
     command: sleep infinity
     # networks:
     #     - sandbox_app_python_devcontainer_default
-    links:
-      - sandbox-db-python
+    # links:
+    #   - sandbox-db-python
 
-  sandbox-db-python:
-    container_name: sandbox.db.python.local
-    image: postgres:latest
-    restart: unless-stopped
-    ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: data
+  # sandbox-db-python:
+  #   container_name: sandbox.db.python.local
+  #   image: postgres:latest
+  #   restart: unless-stopped
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: postgres
+  #     POSTGRES_DB: data
 
 # networks:
 #     sandbox_app_python_devcontainer_default:
